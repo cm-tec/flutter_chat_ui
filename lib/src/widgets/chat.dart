@@ -46,6 +46,7 @@ class Chat extends StatefulWidget {
     this.imageMessageBuilder,
     this.isAttachmentUploading,
     this.isLastPage,
+    this.isNextPageLoading,
     this.isTextMessageTextSelectable = true,
     this.l10n = const ChatL10nEn(),
     required this.messages,
@@ -159,6 +160,8 @@ class Chat extends StatefulWidget {
   /// See [ChatList.isLastPage]
   final bool? isLastPage;
 
+  final bool? isNextPageLoading;  
+  
   /// See [Message.isTextMessageTextSelectable]
   final bool isTextMessageTextSelectable;
 
@@ -492,6 +495,7 @@ class _ChatState extends State<Chat> {
                                         BoxConstraints constraints) =>
                                     ChatList(
                                   isLastPage: widget.isLastPage,
+                                      isNextPageLoading: widget.isNextPageLoading,
                                   itemBuilder: (item, index) =>
                                       _messageBuilder(item, constraints),
                                   items: _chatMessages,
