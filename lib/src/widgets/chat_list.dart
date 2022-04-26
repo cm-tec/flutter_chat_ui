@@ -12,7 +12,7 @@ class ChatList extends StatefulWidget {
   const ChatList({
     Key? key,
     this.isLastPage,
-    this.isNextPageLoading,
+    required this.isNextPageLoading,
     required this.itemBuilder,
     required this.items,
     this.onEndReached,
