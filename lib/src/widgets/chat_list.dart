@@ -12,6 +12,7 @@ class ChatList extends StatefulWidget {
   const ChatList({
     Key? key,
     this.isLastPage,
+    this.isNextPageLoading,
     required this.itemBuilder,
     required this.items,
     this.onEndReached,
@@ -24,7 +25,9 @@ class ChatList extends StatefulWidget {
   /// When true, indicates that there are no more pages to load and
   /// pagination will not be triggered.
   final bool? isLastPage;
-
+    
+  final bool? isNextPageLoading;
+  
   /// Items to build
   final List<Object> items;
 
@@ -55,7 +58,7 @@ class ChatList extends StatefulWidget {
 /// [ChatList] widget state
 class _ChatListState extends State<ChatList>
     with SingleTickerProviderStateMixin {
-  bool _isNextPageLoading = false;
+  bool _isNextPageLoading = widget.isNextPageLoading ?? false;
   final GlobalKey<SliverAnimatedListState> _listKey =
       GlobalKey<SliverAnimatedListState>();
   late List<Object> _oldData = List.from(widget.items);
