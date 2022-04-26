@@ -12,7 +12,7 @@ class ChatList extends StatefulWidget {
   const ChatList({
     Key? key,
     this.isLastPage,
-    this.isNextPageLoading = false,
+    this.isNextPageLoading,
     required this.itemBuilder,
     required this.items,
     this.onEndReached,
@@ -208,10 +208,6 @@ class _ChatListState extends State<ChatList>
 
           _controller.duration = const Duration();
           _controller.forward();
-
-          setState(() {
-            widget.isNextPageLoading = true;
-          });
 
           widget.onEndReached!().whenComplete(() {
             _controller.duration = const Duration(milliseconds: 300);
