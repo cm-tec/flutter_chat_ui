@@ -26,7 +26,7 @@ class ChatList extends StatefulWidget {
   /// pagination will not be triggered.
   final bool? isLastPage;
 
-  final bool? isNextPageLoading;
+  final bool isNextPageLoading;
   
   /// Items to build
   final List<Object> items;
