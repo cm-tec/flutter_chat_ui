@@ -9,10 +9,10 @@ import 'inherited_user.dart';
 /// Animated list which handles automatic animations and pagination
 class ChatList extends StatefulWidget {
   /// Creates a chat list widget
-  const ChatList({
+  ChatList({
     Key? key,
     this.isLastPage,
-    this.isNextPageLoading,
+    this.isNextPageLoading = false,
     required this.itemBuilder,
     required this.items,
     this.onEndReached,
@@ -26,7 +26,7 @@ class ChatList extends StatefulWidget {
   /// pagination will not be triggered.
   final bool? isLastPage;
     
-  final bool? isNextPageLoading;
+  bool isNextPageLoading;
   
   /// Items to build
   final List<Object> items;
@@ -58,7 +58,6 @@ class ChatList extends StatefulWidget {
 /// [ChatList] widget state
 class _ChatListState extends State<ChatList>
     with SingleTickerProviderStateMixin {
-  bool _isNextPageLoading = widget.isNextPageLoading ?? false;
   final GlobalKey<SliverAnimatedListState> _listKey =
       GlobalKey<SliverAnimatedListState>();
   late List<Object> _oldData = List.from(widget.items);
@@ -210,7 +209,7 @@ class _ChatListState extends State<ChatList>
           _controller.forward();
 
           setState(() {
-            _isNextPageLoading = true;
+            widget.isNextPageLoading = true;
           });
 
           widget.onEndReached!().whenComplete(() {
@@ -255,7 +254,7 @@ class _ChatListState extends State<ChatList>
                     child: SizedBox(
                       height: 16,
                       width: 16,
-                      child: _isNextPageLoading
+                      child: widget.isNextPageLoading
                           ? CircularProgressIndicator(
                               backgroundColor: Colors.transparent,
                               strokeWidth: 1.5,
