@@ -182,6 +182,8 @@ class _ChatPageState extends State<ChatPage> {
     });
   }
 
+  bool _isNextPageLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -190,8 +192,18 @@ class _ChatPageState extends State<ChatPage> {
         onAttachmentPressed: _handleAtachmentPressed,
         onMessageTap: _handleMessageTap,
         onPreviewDataFetched: _handlePreviewDataFetched,
-        onSendPressed: _handleSendPressed,
+        onSendPressed: (_) {
+          setState(() {
+            _isNextPageLoading = false;
+          });
+        },
         user: _user,
+        isNextPageLoading: _isNextPageLoading,
+        onEndReached: () {
+          setState(() {
+            _isNextPageLoading = true;
+          });
+        },
       ),
     );
   }

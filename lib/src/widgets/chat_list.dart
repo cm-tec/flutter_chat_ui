@@ -27,7 +27,7 @@ class ChatList extends StatefulWidget {
   final bool? isLastPage;
 
   final bool isNextPageLoading;
-  
+
   /// Items to build
   final List<Object> items;
 
@@ -36,7 +36,7 @@ class ChatList extends StatefulWidget {
 
   /// Used for pagination (infinite scroll). Called when user scrolls
   /// to the very end of the list (minus [onEndReachedThreshold]).
-  final Future<void> Function()? onEndReached;
+  final void Function()? onEndReached;
 
   /// Used for pagination (infinite scroll) together with [onEndReached].
   /// Can be anything from 0 to 1, where 0 is immediate load of the next page
@@ -58,7 +58,6 @@ class ChatList extends StatefulWidget {
 /// [ChatList] widget state
 class _ChatListState extends State<ChatList>
     with SingleTickerProviderStateMixin {
-  
   final GlobalKey<SliverAnimatedListState> _listKey =
       GlobalKey<SliverAnimatedListState>();
   late List<Object> _oldData = List.from(widget.items);
@@ -195,6 +194,14 @@ class _ChatListState extends State<ChatList>
   Widget build(BuildContext context) {
     final _query = MediaQuery.of(context);
 
+    if (widget.isNextPageLoading) {
+      _controller.duration = const Duration();
+      _controller.forward();
+    } else {
+      _controller.duration = const Duration(milliseconds: 300);
+      _controller.reverse();
+    }
+
     return NotificationListener<ScrollNotification>(
       onNotification: (notification) {
         if (widget.onEndReached == null || widget.isLastPage == true) {
@@ -206,13 +213,7 @@ class _ChatListState extends State<ChatList>
                 (widget.onEndReachedThreshold ?? 0.75))) {
           if (widget.items.isEmpty || widget.isNextPageLoading) return false;
 
-          _controller.duration = const Duration();
-          _controller.forward();
-
-          widget.onEndReached!().whenComplete(() {
-            _controller.duration = const Duration(milliseconds: 300);
-            _controller.reverse();
-          });
+          widget.onEndReached!();
         }
 
         return false;

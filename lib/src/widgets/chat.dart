@@ -160,8 +160,8 @@ class Chat extends StatefulWidget {
   /// See [ChatList.isLastPage]
   final bool? isLastPage;
 
-  final bool isNextPageLoading;  
-  
+  final bool isNextPageLoading;
+
   /// See [Message.isTextMessageTextSelectable]
   final bool isTextMessageTextSelectable;
 
@@ -186,7 +186,7 @@ class Chat extends StatefulWidget {
   final void Function()? onBackgroundTap;
 
   /// See [ChatList.onEndReached]
-  final Future<void> Function()? onEndReached;
+  final void Function()? onEndReached;
 
   /// See [ChatList.onEndReachedThreshold]
   final double? onEndReachedThreshold;
