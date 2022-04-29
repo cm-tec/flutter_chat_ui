@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -46,7 +47,7 @@ class Chat extends StatefulWidget {
     this.imageMessageBuilder,
     this.isAttachmentUploading,
     this.isLastPage,
-    this.isNextPageLoading = false,
+    required this.isNextPageLoading,
     this.isTextMessageTextSelectable = true,
     this.l10n = const ChatL10nEn(),
     required this.messages,
@@ -160,7 +161,7 @@ class Chat extends StatefulWidget {
   /// See [ChatList.isLastPage]
   final bool? isLastPage;
 
-  final bool isNextPageLoading;
+  final bool Function(bool) isNextPageLoading;
 
   /// See [Message.isTextMessageTextSelectable]
   final bool isTextMessageTextSelectable;

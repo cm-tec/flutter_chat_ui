@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:diffutil_dart/diffutil.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
@@ -26,7 +28,7 @@ class ChatList extends StatefulWidget {
   /// pagination will not be triggered.
   final bool? isLastPage;
 
-  final bool isNextPageLoading;
+  final bool Function(bool) isNextPageLoading;
 
   /// Items to build
   final List<Object> items;
@@ -193,13 +195,14 @@ class _ChatListState extends State<ChatList>
   @override
   Widget build(BuildContext context) {
     final _query = MediaQuery.of(context);
+    final _isNextPageLoading = widget.isNextPageLoading(false);
 
-    if (widget.isNextPageLoading) {
-      _controller.duration = const Duration();
-      _controller.forward();
-    } else {
+    if (!_isNextPageLoading) {
       _controller.duration = const Duration(milliseconds: 300);
       _controller.reverse();
+    } else {
+      _controller.duration = const Duration();
+      _controller.forward();
     }
 
     return NotificationListener<ScrollNotification>(
@@ -211,8 +214,14 @@ class _ChatListState extends State<ChatList>
         if (notification.metrics.pixels >=
             (notification.metrics.maxScrollExtent *
                 (widget.onEndReachedThreshold ?? 0.75))) {
-          if (widget.items.isEmpty || widget.isNextPageLoading) return false;
+          if (widget.items.isEmpty || widget.isNextPageLoading(false))
+            return false;
+          setState(() {
+            widget.isNextPageLoading(true);
+          });
 
+          _controller.duration = const Duration();
+          _controller.forward();
           widget.onEndReached!();
         }
 
@@ -248,7 +257,7 @@ class _ChatListState extends State<ChatList>
                     child: SizedBox(
                       height: 16,
                       width: 16,
-                      child: widget.isNextPageLoading
+                      child: widget.isNextPageLoading(false)
                           ? CircularProgressIndicator(
                               backgroundColor: Colors.transparent,
                               strokeWidth: 1.5,

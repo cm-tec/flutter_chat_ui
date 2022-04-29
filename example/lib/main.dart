@@ -198,7 +198,12 @@ class _ChatPageState extends State<ChatPage> {
           });
         },
         user: _user,
-        isNextPageLoading: _isNextPageLoading,
+        isNextPageLoading: (setLoading) {
+          if (setLoading) {
+            _isNextPageLoading = true;
+          }
+          return _isNextPageLoading;
+        },
         onEndReached: () {
           setState(() {
             _isNextPageLoading = true;
